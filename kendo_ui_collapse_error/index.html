@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link href="https://start.exactonline.nl/Content/responsive/bootstrap/css/bootstrap-3.2.0.min.css?v=3" rel="stylesheet" type="text/css" />
+    <link href="https://start.exactonline.nl/Content/responsive/css/responsive-0.0.9.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="https://start.exactonline.nl/Scripts/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="https://start.exactonline.nl/Scripts/kendo/kendo.all.min.js"></script>
+</head>
+
+<body class="ex-dashboard">
+    <div class="container ex-layout-large ex-margin-top" id="AccountancyDashboard">
+        <div class="row ex-margin-bottom">
+            <div class="col-xs-12">
+                <h1>Notes</h1>
+                <ul>
+                    <li>rendering a chart on the .panel-body and using show.bs.collapse leads to a "Uncaught TypeError ... clone". This btw doesn't happen in Internet Explorer
+                    <li>rendering a chart as a child of the .panel-body and using show.bs.collapse renders the chart, but the chart doesn't stay within the section.
+                    <li>using the shown.bs.collapse event works, however this only renders the chart after the expand animation has ended and isn't smooth (only a small margin of I guess 16px animated, the chart itself just appears), see <a href="http://getbootstrap.com/javascript/#collapse-events">http://getbootstrap.com/javascript/#collapse-events</a>
+                    <li>Using window.setTimeout inside the show.bs.collapse to move the rendering of the chart to the end fo the event queue might help. The order is: start expanding - render - end expanding.
+                    <li>Setting a fixed height on the chart element helps with having a smooth animation
+                    <li>Regardless of having a fixed height or not, resizing the chart doesn't change its height only its width.
+                    <li><b>I still don't know why the Kendo error occurs, must be something with how the bootstrap collapse is displayed (CSS properties, I don't know).</li>
+                </ul>
+            </div>
+        </div>  
+        <div class="row ex-margin-bottom">
+            <div class="col-xs-12">
+                <button id="clean" class="btn btn-warning">Remove all rendered charts</button>
+                <button id="height" class="btn btn-success">Turn fixed height on</button>
+                <button id="resize" class="btn btn-default">Resize charts</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="ex-column-small">
+                <div class="ex-widget" id="WidgetClientManagement">
+                    <div class="ex-widget__header">
+                        <h2 id="WidgetClientManagement_Title">.panel-body as chart</h2>
+                    </div>
+                    <div class="ex-widget__content">
+                        <div class="panel-group">
+                            <div id="Collapse1" class="ex-widget-collapse panel panel-default ex-widget-collapse--loading">
+                                <div class="panel-heading collapsed ex-fade-color animate" data-toggle="collapse" data-parent="#Collapse1" data-target="#Collapse1 .panel-collapse">
+                                    <div class="panel-title">
+                                        <div class="ex-widget-collapse__primary">
+                                            <div class="ex-widget-collapse__title">Expand me</div>
+                                            <div class="ex-widget-collapse__subtitle"></div>
+                                        </div>
+                                        <div id="Collapse1_Secondary" class="ex-widget-collapse__secondary">
+                                            0
+                                            <div class="ex-widget-collapse__icon"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-collapse collapse">
+                                    <div class="panel-body chart">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ex-widget__footer"></div>
+                </div>
+            </div>
+
+            <div class="ex-column-small">
+                <div class="ex-widget" id="WidgetClientManagement">
+                    <div class="ex-widget__header">
+                        <h2 id="WidgetClientManagement_Title">.panel-body with chart as child</h2>
+                    </div>
+                    <div class="ex-widget__content">
+                        <div class="panel-group">
+                            <div id="Collapse2" class="ex-widget-collapse panel panel-default">
+                                <div class="panel-heading collapsed ex-fade-color animate" data-toggle="collapse" data-parent="#Collapse2" data-target="#Collapse2 .panel-collapse">
+                                    <div class="panel-title">
+                                        <div class="ex-widget-collapse__primary">
+                                            <div class="ex-widget-collapse__title">Expand me</div>
+                                            <div class="ex-widget-collapse__subtitle"></div>
+                                        </div>
+                                        <div id="Collapse2_Secondary" class="ex-widget-collapse__secondary">
+                                            0
+                                            <div class="ex-widget-collapse__icon"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-collapse collapse">
+                                    <div id="Collapse2_Body" class="panel-body">
+                                        <div class="chart"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ex-widget__footer"></div>
+                </div>
+            </div>          
+            
+            <div class="ex-column-small">
+                <div class="ex-widget" id="WidgetClientManagement">
+                    <div class="ex-widget__header">
+                        <h2 id="WidgetClientManagement_Title">.panel-body as chart using shown.bs.collapse</h2>
+                    </div>
+                    <div class="ex-widget__content">
+                        <div class="panel-group">
+                            <div id="Collapse3" class="ex-widget-collapse panel panel-default ex-widget-collapse--loading">
+                                <div class="panel-heading collapsed ex-fade-color animate" data-toggle="collapse" data-parent="#Collapse3" data-target="#Collapse3 .panel-collapse">
+                                    <div class="panel-title">
+                                        <div class="ex-widget-collapse__primary">
+                                            <div class="ex-widget-collapse__title">Expand me</div>
+                                            <div class="ex-widget-collapse__subtitle"></div>
+                                        </div>
+                                        <div id="Collapse1_Secondary" class="ex-widget-collapse__secondary">
+                                            0
+                                            <div class="ex-widget-collapse__icon"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-collapse collapse">
+                                    <div class="panel-body chart">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ex-widget__footer"></div>
+                </div>
+            </div>
+
+            <div class="ex-column-small">
+                <div class="ex-widget" id="WidgetClientManagement">
+                    <div class="ex-widget__header">
+                        <h2 id="WidgetClientManagement_Title">.panel-body with chart as child using shown.bs.collapse</h2>
+                    </div>
+                    <div class="ex-widget__content">
+                        <div class="panel-group">
+                            <div id="Collapse4" class="ex-widget-collapse panel panel-default">
+                                <div class="panel-heading collapsed ex-fade-color animate" data-toggle="collapse" data-parent="#Collapse4" data-target="#Collapse4 .panel-collapse">
+                                    <div class="panel-title">
+                                        <div class="ex-widget-collapse__primary">
+                                            <div class="ex-widget-collapse__title">Expand me</div>
+                                            <div class="ex-widget-collapse__subtitle"></div>
+                                        </div>
+                                        <div id="Collapse2_Secondary" class="ex-widget-collapse__secondary">
+                                            0
+                                            <div class="ex-widget-collapse__icon"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-collapse collapse">
+                                    <div id="Collapse2_Body" class="panel-body">
+                                        <div class="chart"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ex-widget__footer"></div>
+                </div>
+            </div> 
+
+             <div class="ex-column-small">
+                <div class="ex-widget" id="WidgetClientManagement">
+                    <div class="ex-widget__header">
+                        <h2 id="WidgetClientManagement_Title">.panel-body with chart as child using rendering at end of event queue</h2>
+                    </div>
+                    <div class="ex-widget__content">
+                        <div class="panel-group">
+                            <div id="Collapse5" class="ex-widget-collapse panel panel-default">
+                                <div class="panel-heading collapsed ex-fade-color animate" data-toggle="collapse" data-parent="#Collapse5" data-target="#Collapse5 .panel-collapse">
+                                    <div class="panel-title">
+                                        <div class="ex-widget-collapse__primary">
+                                            <div class="ex-widget-collapse__title">Expand me</div>
+                                            <div class="ex-widget-collapse__subtitle"></div>
+                                        </div>
+                                        <div id="Collapse2_Secondary" class="ex-widget-collapse__secondary">
+                                            0
+                                            <div class="ex-widget-collapse__icon"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-collapse collapse">
+                                    <div id="Collapse2_Body" class="panel-body">
+                                        <div class="chart"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ex-widget__footer"></div>
+                </div>
+            </div>  
+
+                    <div class="ex-column-small">
+                <div class="ex-widget" id="WidgetClientManagement">
+                    <div class="ex-widget__header">
+                        <h2 id="WidgetClientManagement_Title">Directly render</h2>
+                    </div>
+                    <div class="ex-widget__content">
+                        <div class="panel-group">
+                            <div id="Collapse6" class="ex-widget-collapse panel panel-default">
+                                <div class="panel-heading collapsed ex-fade-color animate" data-toggle="collapse" data-parent="#Collapse6" data-target="#Collapse6 .panel-collapse">
+                                    <div class="panel-title">
+                                        <div class="ex-widget-collapse__primary">
+                                            <div class="ex-widget-collapse__title">Expand me</div>
+                                            <div class="ex-widget-collapse__subtitle"></div>
+                                        </div>
+                                        <div id="Collapse2_Secondary" class="ex-widget-collapse__secondary">
+                                            0
+                                            <div class="ex-widget-collapse__icon"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-collapse collapse">
+                                    <div id="Collapse2_Body" class="panel-body chart">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ex-widget__footer"></div>
+                </div>
+            </div>  
+        </div>
+        <div class="without-widget _hidden">
+            <div class="row">        
+                <div id="simple-div" class="col-xs-4">
+                    <div class="chart"></div>
+                </div>
+                <div id="simple-div-hidden" class="col-xs-4 hidden">
+                    <div class="chart"></div>
+                </div>
+            </div>
+            <div class="row">     
+                <div id="simple-div-hidden-no-width" class="hidden">
+                    <div class="chart"></div>
+                </div>
+            </div>
+        </div>
+
+        <script src="bootstrap.js"></script>
+
+        <script type="text/javascript">
+        $(function() {
+            var colors = {
+                "white": "#ffffff",
+                "darkGray": "#59595B",
+                "lightGray": "#dfdfdf",
+                "baseColor": {
+                    "red": 84,
+                    "green": 153,
+                    "blue": 198,
+                    "_maxValue": 255
+                },
+                "stepColor": {
+                    "red": 32,
+                    "green": 19,
+                    "blue": 10,
+                    "_maxValue": 255
+                }
+            };
+
+            var fonts = {
+                "seriesLabelFont": "700 13px arial"
+            };
+
+            var defaultOptions = {
+  				transitions: false,
+                legend: {
+                    visible: true,
+                    position: "bottom",
+                    orientation: "horizontal",
+                    labels: {
+                    	// playing with the labels margin or padding might be possible
+                        margin: {
+                        	right: 8,
+                            top: 2
+                        },
+                        color: colors.darkGray,
+                        font: fonts.categoriesLabelFont
+                    }
+                },
+                seriesHover: function(e) {
+                    e.element.css('cursor', 'pointer');
+                },
+                tooltip: {
+                    visible: true,
+                    background: 'transparent',
+                    border: 'none',
+                    color: colors.darkGray,
+                    font: fonts.seriesLabelFont,
+                },
+                categoryAxis: {
+                    majorGridLines: {
+                        visible: false
+                    },
+                    line: {
+                        color: colors.lightGray,
+                        dashType: "dash" // dashes on the axis
+                    },
+                    majorTicks: {
+                        width: 0
+                    },
+                    labels: {
+                        color: colors.darkGray
+                    },
+                    visible: true,
+                },
+				valueAxis: {
+					title: {
+						text: 'millions',
+						position: 'left',
+						font: '13px arial',
+						rotation: '0',
+						color: colors.darkGray,
+						//border: { width: 1 },
+						margin: { top: -4 },
+						//padding: { bottom: 0, left: 30 },
+					},
+                    majorGridLines: {
+                        dashType: "dash",
+                        visible: true,
+                        color: colors.lightGray
+                    },
+                    // change major unit to decide how many dashed lines you want, now it appears for every amount
+                    majorUnit: 1,    
+                    line: {
+                        width: 0 // hide the value axis
+                    },
+                    labels: {
+                        color: colors.darkGray,
+                        padding: { top: 0, left: 20 },
+                        margin: { left: 0 }
+                    },
+				},
+            	seriesDefaults: {
+					"highlight": {
+	                	"visible": false
+	                },
+	                "overlay": {
+	                    "gradient": "none"
+	                },
+	                "border": {
+	                    "width": 0
+	                },
+	                'spacing': 0
+				},				
+				seriesColors: ["#5499c6", "#94bfda"],
+
+				// disable hiding/showing series
+				legendItemClick: function(e) { e.preventDefault(); }
+            };
+
+           var dataOptions = {
+                series: [
+                    {
+                        "name": "series 1",                     
+                        "data": [1, undefined, 3],
+                    },
+                    {
+                        "name": "series 2",
+                        "data": [4, 5, 2],
+                    }
+                ],
+                categoryAxis: {
+                    categories: ['one', 'two', 'three'],
+                },
+                tooltip: { 
+                    template: "<div class='ex-tooltip'><div class='ex-tooltip__text'>much</div></div>"
+                }
+            };
+
+
+            
+            var options = $.extend(true, {}, defaultOptions, dataOptions);
+
+
+            $('#clean').click(function() {
+                $('.chart').html('');
+            })     
+            
+            $('#height').click((function() {
+                var $el = $('#height'),
+                    $chart = $('.chart'),
+                    hasFixedHeight = false,
+                    fixedHeight = '250px';
+
+                return function() {
+                    if (hasFixedHeight) {
+                        $el
+                            .removeClass('btn-danger')
+                            .addClass('btn-success')
+                            .text('Turn fixed height on')
+                        $chart.css('height', 'auto');
+                        hasFixedHeight = false;
+                    } else {                        
+                        $el
+                            .removeClass('btn-success')
+                            .addClass('btn-danger')
+                            .text('Turn fixed height off');
+                        $chart.css('height', fixedHeight);
+                        hasFixedHeight = true;
+                    }
+                }
+            })());
+
+            $('#resize').click(function() {
+                console.log('resize all charts');
+
+                $('.chart').each(function() {
+                    var chart = $(this).data('kendoChart');
+                    if (chart) {
+                        try {
+                            chart.resize();    
+                        }
+                        catch (e) {
+                            console.error(e);
+                        }
+                    }
+                });
+            });            
+
+            $('#Collapse1').on('show.bs.collapse', renderChart);
+            $('#Collapse2').on('show.bs.collapse', renderChart);
+            $('#Collapse3').on('shown.bs.collapse', renderChart);
+            $('#Collapse4').on('shown.bs.collapse', renderChart);
+
+            $('#Collapse5').on('show.bs.collapse', function() {
+                // render at end of event queue (after the bootstrap expand starts but before it ends)
+                window.setTimeout($.proxy(renderChart, this), 1);
+            });
+
+            $('#Collapse6').parentsUntil('.ex-column-small').hide(); // doesnt work
+            //$('#Collapse6').find('.chart').kendoChart(options);
+
+            function renderChart() {
+                console.log('renderChart');
+                $(this).find('.chart').kendoChart(options);
+            }            
+
+            function renderHiddenChart(el) {
+                console.log('renderHiddenChart');
+                $(el).find('.chart')
+                    .kendoChart(options)
+                    .end()
+                    .removeClass('hidden');
+            }
+
+            //$('#simple-div').find('.chart').kendoChart(options);
+
+            //renderHiddenChart('#simple-div-hidden');
+            //renderHiddenChart('#simple-div-hidden-no-width');            
+
+        });
+        </script>
+    </body>
+</html>

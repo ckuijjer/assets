@@ -1,0 +1,18 @@
+.icon {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	fill: currentColor;
+}
+.icon-home {
+	/*fill: #000000;*/
+}
+.icon-music {
+	/*fill: #000000;*/
+}
+.icon-books {
+	/*fill: #000000;*/
+}
+.icon-tag {
+	/*fill: #000000;*/
+}

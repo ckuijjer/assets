@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		body {
+			margin: 0;
+			font-family: Arial, sans-serif;
+			font-size: 12px;
+		}
+		header {
+			background-color: #0288D1;
+			color: #fff;
+		}
+
+		header.isAnimating {			
+			-webkit-animation: progress 1s infinite;
+			animation: progress 1s infinite;			
+		}
+
+		/* background: linear-gradient(to right, #0288d1 0%,#057aae 0%,#057aae 5%,#0288d1 10%); */
+			/* linear-gradient(to right, #0288d1 0%,#057aae 10%,#057aae 15%,#0288d1 20%); */
+			/*
+			0% { background-position: 0%;}			
+			100% { background-position: 100%; }
+						0% { background-color: #0288D1;}
+			50% { background-color: #057AAE;}
+			100% { background-color: #0288D1;}
+
+			*/
+
+		@-webkit-keyframes progress {
+			0% { background: linear-gradient(to right, #0288d1 0%,#057aae 0%,#057aae 5%,#0288d1 10%); }
+			100% { background: linear-gradient(to right, #0288d1 85%,#057aae 90%,#057aae 95%,#0288d1 100%); }
+		}
+
+		@keyframes progress {
+			0% { background: linear-gradient(to right, #0288d1 0%,#057aae 0%,#057aae 5%,#0288d1 10%); }
+			100% { background: linear-gradient(to right, #0288d1 85%,#057aae 90%,#057aae 95%,#0288d1 100%); }			
+		}
+
+		.header__top {
+			padding: 0 24px;
+			border-bottom: 1px solid #057AAE;
+			line-height: 50px;			
+		}
+
+		.header__bottom {
+			padding: 0 24px;
+			border-top: 2px solid #0D8FCE;
+			line-height: 26px;
+		}
+
+		.logo {
+			vertical-align: top;
+			margin: 13px 16px 0 0;
+		}
+
+		.company-selector {
+			font-size: 18px;
+		}
+
+		nav {
+			display: inline-block;
+		}		
+
+		nav ul {
+			display: inline-block;
+			list-style: none;
+			padding: 0;
+			margin: 0 -8px;
+		}
+
+		nav ul li {
+			padding: 0 8px;
+			display: inline-block;
+		}
+
+		.top-navigation,
+		.secondary-navigation {
+			font-size: 10px;
+		}
+
+		.badge {
+			background-color: #CA4C52;
+			padding: 2px 4px;
+			border-radius: 2px;
+		}
+
+		main {
+			padding: 24px;
+		}
+
+		main h1 {
+			margin: 0 0 16px;
+		}
+
+
+		/* helpers */
+		.pull-right {
+			float: right;
+		}
+
+		.clearfix:after {
+			display: block;
+			content: '';
+			clear: both;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<div class="header__top clearfix">
+			<img src="logo.png" class="logo"/>
+			<span class="company-selector">01234 Long company name &or;</span>
+			<nav class="top-navigation pull-right">
+				<ul class="buttons">
+					<li class="search"></li>
+					<li>Help &or;</li>
+					<li>Anette Hiltunen &or;</li>
+				</ul>
+			</nav>
+		</div>
+		<div class="header__bottom clearfix">
+			<nav class="main-navigation">
+				<ul>
+					<li>Dashboard</li>
+					<li>Financial</li>
+					<li>Sales</li>
+					<li>Purchase</li>
+				</ul>
+			</nav>
+			<nav class="secondary-navigation pull-right">
+				<ul>
+					<li>Create</li>
+					<li>Documents</li>
+					<li>Activities <span class="badge">2</span></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+	<main>
+		<h1>Main Content</h1>
+		<button onclick="toggleAnimation()">Start/stop progress animation</button>
+	</main>
+	<script type="text/javascript">			
+			function toggleAnimation() {
+				var header = document.getElementsByTagName('header')[0];
+				header.classList.toggle('isAnimating');
+			}
+	</script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link href="https://start.exactonline.nl/Content/responsive/bootstrap/css/bootstrap-3.2.0.min.css?v=3" rel="stylesheet" type="text/css" />
+    <link href="https://start.exactonline.nl/Content/responsive/css/responsive-0.0.9.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="https://start.exactonline.nl/Scripts/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="https://start.exactonline.nl/Scripts/kendo/kendo.all.min.js"></script>
+</head>
+
+<body class="ex-dashboard">
+    <div class="container ex-layout-large ex-margin-top" id="AccountancyDashboard">
+        <div class="row ex-margin-bottom">
+            <div class="col-xs-12">
+                <h1>Notes</h1>
+                Adding something like
+                <code>
+                "color": "transparent",
+                "border": {
+                    "width": 1,
+                    "dashType": "dash",
+                    "color": "#666666"                            
+                },
+                </code>
+                to the series object might do what you want. Note that:
+
+                <ul>
+                    <li>The border is outside of the background area, making the dashed part slightly bigger</li>
+                    <li>The bottom of the dotted bar chart is also dotted, I'm afraid this can't be disabled. I tried setting the border bottom to width 0 but that doesn't do anything, nor is that described in the documentation</li>
+                    <li><a href="http://docs.telerik.com/kendo-ui/api/javascript/dataviz/ui/chart#configuration-series.border.dashType">http://docs.telerik.com/kendo-ui/api/javascript/dataviz/ui/chart#configuration-series.border.dashType</a> is the chart documentation (links to the dashType property)</li>
+                </ul>
+            </div>  
+        </div>
+           
+        <div class="row">
+            <div class="ex-column-small">
+                <div class="ex-widget" id="WidgetClientManagement">
+                    <div class="ex-widget__header">
+                        <h2 id="WidgetClientManagement_Title">.panel-body as chart</h2>
+                    </div>
+                    <div class="ex-widget__content">
+                        <div class="panel-group">
+                            <div id="Collapse1" class="ex-widget-collapse panel panel-default ex-widget-collapse--loading">
+                                <div class="panel-heading  ex-fade-color animate" data-toggle="collapse" data-parent="#Collapse1" data-target="#Collapse1 .panel-collapse">
+                                    <div class="panel-title">
+                                        <div class="ex-widget-collapse__primary">
+                                            <div class="ex-widget-collapse__title">Expand me</div>
+                                            <div class="ex-widget-collapse__subtitle"></div>
+                                        </div>
+                                        <div id="Collapse1_Secondary" class="ex-widget-collapse__secondary">
+                                            0
+                                            <div class="ex-widget-collapse__icon"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-collapse collapse in">
+                                    <div class="panel-body chart">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ex-widget__footer"></div>
+                </div>
+            </div>
+        </div>
+
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript">
+        $(function() {
+            var colors = {
+                "white": "#ffffff",
+                "darkGray": "#59595B",
+                "lightGray": "#dfdfdf",
+                "baseColor": {
+                    "red": 84,
+                    "green": 153,
+                    "blue": 198,
+                    "_maxValue": 255
+                },
+                "stepColor": {
+                    "red": 32,
+                    "green": 19,
+                    "blue": 10,
+                    "_maxValue": 255
+                }
+            };
+
+            var fonts = {
+                "seriesLabelFont": "700 13px arial"
+            };
+
+            var defaultOptions = {
+  				transitions: false,
+                legend: {
+                    visible: true,
+                    position: "bottom",
+                    orientation: "horizontal",
+                    labels: {
+                    	// playing with the labels margin or padding might be possible
+                        margin: {
+                        	right: 8,
+                            top: 2
+                        },
+                        color: colors.darkGray,
+                        font: fonts.categoriesLabelFont
+                    }
+                },
+                seriesHover: function(e) {
+                    e.element.css('cursor', 'pointer');
+                },
+                tooltip: {
+                    visible: true,
+                    background: 'transparent',
+                    border: 'none',
+                    color: colors.darkGray,
+                    font: fonts.seriesLabelFont,
+                },
+                categoryAxis: {
+                    majorGridLines: {
+                        visible: false
+                    },
+                    line: {
+                        color: colors.lightGray,
+                        dashType: "dash" // dashes on the axis
+                    },
+                    majorTicks: {
+                        width: 0
+                    },
+                    labels: {
+                        color: colors.darkGray
+                    },
+                    visible: true,
+                },
+				valueAxis: {
+					title: {
+						text: 'millions',
+						position: 'left',
+						font: '13px arial',
+						rotation: '0',
+						color: colors.darkGray,
+						//border: { width: 1 },
+						margin: { top: -4 },
+						//padding: { bottom: 0, left: 30 },
+					},
+                    majorGridLines: {
+                        dashType: "dash",
+                        visible: true,
+                        color: colors.lightGray
+                    },
+                    // change major unit to decide how many dashed lines you want, now it appears for every amount
+                    majorUnit: 1,    
+                    line: {
+                        width: 0 // hide the value axis
+                    },
+                    labels: {
+                        color: colors.darkGray,
+                        padding: { top: 0, left: 20 },
+                        margin: { left: 0 }
+                    },
+				},
+            	seriesDefaults: {
+                    "stack": true,
+					"highlight": {
+	                	"visible": false
+	                },
+	                "overlay": {
+	                    "gradient": "none"
+	                },
+	                "border": {
+	                    "width": 0
+	                },
+	                'spacing': 0
+				},				
+				seriesColors: ["#5499c6", "#94bfda"],
+
+				// disable hiding/showing series
+				legendItemClick: function(e) { e.preventDefault(); }
+            };
+
+           var dataOptions = {
+                series: [
+                    {
+                        "name": "series 1",                     
+                        "data": [1, undefined, 3],
+                    },
+                    {
+                        "color": "transparent",
+                        "border": {
+                            "width": 1,
+                            "dashType": "dash",
+                            "color": "#666666"                            
+                        },
+                        "name": "series 2",
+                        "data": [4, 5, 2],
+                    }
+                ],
+                categoryAxis: {
+                    categories: ['one', 'two', 'three'],
+                },
+                tooltip: { 
+                    template: "<div class='ex-tooltip'><div class='ex-tooltip__text'>much</div></div>"
+                }
+            };
+            
+            var options = $.extend(true, {}, defaultOptions, dataOptions);
+
+            $('#Collapse1').find('.chart').kendoChart(options);
+        });
+        </script>
+    </body>
+</html>

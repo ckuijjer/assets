@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link href="https://start.exactonline.nl/Content/responsive/bootstrap/css/bootstrap-3.2.0.min.css?v=4" rel="stylesheet" type="text/css" />
+    <link href="https://start.exactonline.nl/Content/responsive/css/responsive-0.0.10.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="https://start.exactonline.nl/Scripts/jquery-1.11.0.min.js"></script>
+
+    <link href="https://start.exactonline.nl/Content/kendo/kendo.dataviz.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="https://start.exactonline.nl/Scripts/kendo/kendo.all.min.js"></script>
+    <style>
+    	.ex-widget-collapse__loader {
+    		height: 0;
+    		overflow: hidden;
+    	}
+
+/*
+    	.ex-widget-collapse--loading .panel-body {
+    		display: none;
+    	}
+*/    	
+
+    	.ex-widget-collapse--loading .ex-widget-collapse__loader {
+    		display: block;
+    		height: 48px;
+    		/* background-color: #f99;*/
+    		position: relative;
+    	}
+
+    	.ex-widget-collapse--loading .ex-widget-collapse__loader img {
+    		position: absolute;
+    		left: 50%;
+    		top: 50%;
+    		-ms-transform: translate(-50%, -50%);
+    		-webkit-animation: rotate 1s linear infinite;
+    		animation: rotate 1s linear infinite;
+    	}
+
+    	@-webkit-keyframes rotate {
+    		from {
+    			-webkit-transform: translate(-50%, -50%) rotate(0);
+				transform: translate(-50%, -50%) rotate(0);
+    		}
+    		to {
+    			-webkit-transform: translate(-50%, -50%) rotate(360deg);
+				transform: translate(-50%, -50%) rotate(360deg);
+    		}
+    		
+    	}
+
+    	@keyframes rotate {
+    		from {
+				transform: translate(-50%, -50%) rotate(0);
+    		}
+    		to {
+				transform: translate(-50%, -50%) rotate(360deg);
+    		}
+    	}
+
+
+/*
+    	.ex-widget-collapse .panel-collapse {
+    		-webkit-transition: height 0.5s ease;
+    		transition: height 0.5s ease;
+    	}
+    	*/
+
+    	/* prototype scripted actions */    	
+    	#Collapse4 .panel-collapse {
+    		position: relative;
+    		overflow: hidden;
+    	}
+
+    	#Collapse4 .ex-widget-collapse__loader {
+    		position: absolute;
+    		top: 0;
+    		right: 0;
+    		bottom: 0;
+    		left: 0;
+    		height: 100%;
+    	}
+
+    	/* using state classes */
+    	#Collapse4.step1 .panel-collapse {
+    		overflow: hidden;
+    		height: 0;    	
+    	}
+    	
+    	#Collapse4.step2 .panel-collapse {
+    		height: 64px;
+    		transition: height 1s ease-in-out;   		    		
+    	}
+
+    	#Collapse4.step2 .ex-widget-collapse__loader {
+    		min-height: 40px;
+    	}
+
+    	#Collapse4.step3 .panel-collapse {
+    		height: 400px;    		
+    		transition: height 1s ease-in-out;   
+    	}
+
+    	#Collapse4.step3 #chart4 {
+    		opacity: 0;
+    	}
+
+    	#Collapse4.step4 .panel-collapse {
+    		height: 400px;
+    	}
+
+    	#Collapse4.step4 .ex-widget-collapse__loader {
+    		opacity: 0;
+    		transition: opacity 1s ease-in-out;
+    	}
+
+    	#Collapse4.step4 #chart4 {    		
+			opacity: 1;
+			transition: opacity 1s ease-in-out;
+    	}
+    </style>
+</head>
+
+<body class="ex-dashboard">
+    <div class="container ex-layout-large ex-margin-top" id="AccountancyDashboard">
+        <div class="row">
+            <div class="ex-column-small">
+                <div class="ex-widget" id="WidgetClientManagement">
+                    <div class="ex-widget__header">
+                        <h2 id="WidgetClientManagement_Title">Chart 1</h2>
+                    </div>
+                    <div class="ex-widget__content">
+                        <div class="panel-group">
+                            <div id="Collapse1" class="ex-widget-collapse panel panel-default ex-widget-collapse--loading">
+                                <div class="panel-heading collapsed ex-fade-color animate" data-toggle="collapse" data-parent="#Collapse1" data-target="#Collapse1 .panel-collapse">
+                                    <div class="panel-title">
+                                        <div class="ex-widget-collapse__primary">
+                                            <div class="ex-widget-collapse__title">Expand me</div>
+                                            <div class="ex-widget-collapse__subtitle"></div>
+                                        </div>
+                                        <div id="Collapse1_Secondary" class="ex-widget-collapse__secondary">
+                                            0
+                                            <div class="ex-widget-collapse__icon"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-collapse collapse">
+                                	<div id="Collapse_Spinner" class="ex-widget-collapse__loader">
+                                		<img src="spinner.svg" width="32" height="32"/>
+                                	</div>
+                                    <div id="Collapse1_Body" class="panel-body">
+                                        <div id="chart1"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ex-widget__footer"></div>
+                </div>
+            </div>
+
+            <div class="ex-column-small">
+                <div class="ex-widget" id="WidgetClientManagement">
+                    <div class="ex-widget__header">
+                        <h2 id="WidgetClientManagement_Title">Chart 2</h2>
+                    </div>
+                    <div class="ex-widget__content">
+                        <div class="panel-group">
+                            <div id="Collapse2" class="ex-widget-collapse panel panel-default">
+                                <div class="panel-heading collapsed ex-fade-color animate" data-toggle="collapse" data-parent="#Collapse2" data-target="#Collapse2 .panel-collapse">
+                                    <div class="panel-title">
+                                        <div class="ex-widget-collapse__primary">
+                                            <div class="ex-widget-collapse__title">Expand me</div>
+                                            <div class="ex-widget-collapse__subtitle"></div>
+                                        </div>
+                                        <div id="Collapse2_Secondary" class="ex-widget-collapse__secondary">
+                                            0
+                                            <div class="ex-widget-collapse__icon"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-collapse collapse">
+                                    <div id="Collapse2_Body" class="panel-body">
+                                        <div id="chart2"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ex-widget__footer"></div>
+                </div>
+            </div>
+
+			<div class="ex-column-small">
+                <div class="ex-widget" id="WidgetClientManagement">
+                    <div class="ex-widget__header">
+                        <h2 id="WidgetClientManagement_Title">Chart 3</h2>
+                    </div>
+                    <div class="ex-widget__content">
+                        <div class="panel-group">
+                            <div id="Collapse3" class="ex-widget-collapse ex-widget-collapse--loading panel panel-default">
+                                <div class="panel-heading collapsed ex-fade-color animate" data-toggle="collapse" data-parent="#Collapse3" data-target="#Collapse3 .panel-collapse">
+                                    <div class="panel-title">
+                                        <div class="ex-widget-collapse__primary">
+                                            <div class="ex-widget-collapse__title">Expand me</div>
+                                            <div class="ex-widget-collapse__subtitle"></div>
+                                        </div>
+                                        <div id="Collapse3_Secondary" class="ex-widget-collapse__secondary">
+                                            0
+                                            <div class="ex-widget-collapse__icon"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-collapse collapse">
+                                	<div id="Collapse_Spinner" class="ex-widget-collapse__loader">
+                                		<img src="spinner.svg" width="32" height="32"/>
+                                	</div>                                
+                                    <div id="Collapse3_Body" class="panel-body">
+                                        <div id="chart3"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ex-widget__footer"></div>
+                </div>
+            </div>
+
+			<div class="ex-column-small">
+                <div class="ex-widget" id="WidgetClientManagement">
+                    <div class="ex-widget__header">
+                        <h2 id="WidgetClientManagement_Title">Prototype</h2>
+                        <div class="ex-widget__buttons">
+                        	<button onclick="startScriptedActions()" class="btn btn-primary">Start scripted actions</button>
+                        </div>
+                    </div>
+                    <div class="ex-widget__content">
+                        <div class="panel-group">
+                            <div id="Collapse4" class="ex-widget-collapse ex-widget-collapse--loading panel panel-default step1">
+                                <div class="panel-heading collapsed ex-fade-color animate">
+                                    <div class="panel-title">
+                                        <div class="ex-widget-collapse__primary">
+                                            <div class="ex-widget-collapse__title">Expand me</div>
+                                            <div class="ex-widget-collapse__subtitle"></div>
+                                        </div>
+                                        <div id="Collapse3_Secondary" class="ex-widget-collapse__secondary">
+                                            0
+                                            <div class="ex-widget-collapse__icon"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-collapse collapse in">
+                                	<div id="Collapse_Spinner" class="ex-widget-collapse__loader">
+                                		<img src="spinner.svg" width="32" height="32"/>
+                                	</div>
+                                    <div id="Collapse3_Body" class="panel-body">
+                                        <div id="chart4"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ex-widget__footer"></div>
+                </div>
+            </div>            
+
+        </div>
+
+        <script src="https://start.exactonline.nl/Scripts/bootstrap-3.2.0.min.js"></script>
+
+        <script type="text/javascript">
+        var chart3Options; // global! wheee!
+
+        $(function() {
+            var colors = {
+                "white": "#ffffff",
+                "darkGray": "#59595B",
+                "lightGray": "#dfdfdf",
+                "baseColor": {
+                    "red": 84,
+                    "green": 153,
+                    "blue": 198,
+                    "_maxValue": 255
+                },
+                "stepColor": {
+                    "red": 32,
+                    "green": 19,
+                    "blue": 10,
+                    "_maxValue": 255
+                }
+            };
+
+            var fonts = {
+                "seriesLabelFont": "700 13px arial"
+            };
+
+            var defaultOptions = {
+  				transitions: false,
+                legend: {
+                    visible: true,
+                    position: "bottom",
+                    orientation: "horizontal",
+                    labels: {
+                    	// playing with the labels margin or padding might be possible
+                        margin: {
+                        	right: 8,
+                            top: 2
+                        },
+                        color: colors.darkGray,
+                        font: fonts.categoriesLabelFont
+                    }
+                },
+                seriesHover: function(e) {
+                    e.element.css('cursor', 'pointer');
+                },
+                tooltip: {
+                    visible: true,
+                    background: 'transparent',
+                    border: 'none',
+                    color: colors.darkGray,
+                    font: fonts.seriesLabelFont,
+                },
+                categoryAxis: {
+                    majorGridLines: {
+                        visible: false
+                    },
+                    line: {
+                        color: colors.lightGray,
+                        dashType: "dash" // dashes on the axis
+                    },
+                    majorTicks: {
+                        width: 0
+                    },
+                    labels: {
+                        color: colors.darkGray
+                    },
+                    visible: true,
+                },
+				valueAxis: {
+					title: {
+						text: 'millions',
+						position: 'left',
+						font: '13px arial',
+						rotation: '0',
+						color: colors.darkGray,
+						//border: { width: 1 },
+						margin: { top: -4 },
+						//padding: { bottom: 0, left: 30 },
+					},
+                    majorGridLines: {
+                        dashType: "dash",
+                        visible: true,
+                        color: colors.lightGray
+                    },
+                    // change major unit to decide how many dashed lines you want, now it appears for every amount
+                    majorUnit: 1,    
+                    line: {
+                        width: 0 // hide the value axis
+                    },
+                    labels: {
+                        color: colors.darkGray,
+                        padding: { top: 0, left: 20 },
+                        margin: { left: 0 }
+                    },
+				},
+            	seriesDefaults: {
+					"highlight": {
+	                	"visible": false
+	                },
+	                "overlay": {
+	                    "gradient": "none"
+	                },
+	                "border": {
+	                    "width": 0
+	                },
+	                'spacing': 0
+				},				
+				seriesColors: ["#5499c6", "#94bfda"],
+
+				// disable hiding/showing series
+				legendItemClick: function(e) { e.preventDefault(); }
+            };
+
+           var dataOptions = {
+                series: [
+                	{
+		                "name": "series 1",                		
+		                "data": [1, undefined, 3],
+	               	},
+		            {
+		            	"name": "series 2",
+		                "data": [4, 5, 2],
+		            }
+		        ],
+		        categoryAxis: {
+					categories: ['one', 'two', 'three'],
+		        },
+                tooltip: { 
+                	template: "<div class='ex-tooltip'><div class='ex-tooltip__text'>much</div></div>"
+                }
+            };
+
+            var columnChartValueAxis = {}
+            var barChartValueAxis = {}
+
+            var chart1Options = $.extend(true, {}, defaultOptions, dataOptions, barChartValueAxis);
+            chart1Options.series[0].type = 'bar';
+            chart1Options.valueAxis.title.position = 'right'
+
+            var chart2Options = $.extend(true, {}, defaultOptions, dataOptions, barChartValueAxis);       
+
+            var chart3override = {
+            	valueAxis: {
+            		labels: {
+            			margin: {
+            				top: 0,
+            				left: 0
+            			},
+            			padding: {
+            				top: 0
+            			}
+            		}
+            	}
+            };
+            chart3Options = $.extend(true, {}, defaultOptions, dataOptions, barChartValueAxis, chart3override);
+
+
+            addChartExpandHandler('#Collapse1','#chart1', 1000);
+            addChartExpandHandler('#Collapse2','#chart2', 1000);
+            //addChartExpandHandler('#Collapse3','#chart3', 1000);
+
+            function addChartExpandHandler(el, chart, time) {
+                $(el).on('show.bs.collapse', function() {
+                	$(el).addClass('ex-widget-collapse--loading');
+
+                    window.setTimeout(function() {
+                    	$(el).find('.ex-widget-collapse__loader').collapse();
+                        $(chart).kendoChart(chart3Options);
+                        $(el).removeClass('ex-widget-collapse--loading');
+                    }, time);
+                });
+            }
+        });
+
+		function startScriptedActions() {
+			setStepClass('step1');
+			
+			// step 2
+			window.setTimeout(function() {
+				setStepClass('step2');
+			}, 1000);
+
+			window.setTimeout(function() {
+				setStepClass('step3');
+				$('#chart4').kendoChart(chart3Options);
+			}, 2000);
+
+			window.setTimeout(function() {
+				setStepClass('step4');
+			}, 3000);
+
+		}
+
+		function setStepClass(step) {
+			$('#Collapse4')
+				.removeClass('step1')
+				.removeClass('step2')
+				.removeClass('step3')
+				.removeClass('step4')
+				.addClass(step);
+		}
+
+        </script>
+</body>
+
+</html>
